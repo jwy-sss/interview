@@ -1,0 +1,110 @@
+create database `0703`;
+use `0703`;
+
+DROP TABLE IF EXISTS admin;
+CREATE TABLE admin(
+adminId int NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
+adminNo Varchar(20) NOT NULL COMMENT '管理员用户名',
+adminPwd varchar(40) NOT NULL COMMENT '管理员密码',
+PRIMARY KEY(adminId)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+INSERT INTO admin(adminNo, adminPwd) VALUES ('admin1','4QrcOUm6Wau+VuBX8g+IPg==');
+
+DROP TABLE IF EXISTS proType;
+CREATE TABLE proType(
+proTypeName varchar(50) NOT NULL COMMENT '题目类型',
+PRIMARY KEY (proTypeName)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+insert into proType(proTypeName) values ('未分类');
+insert into proType( proTypeName) values ('计算机网络');
+insert into proType(proTypeName) values ('数据库');
+insert into proType( proTypeName) values ('计算机组成原理');
+
+
+DROP TABLE IF EXISTS problem;
+CREATE TABLE problem(
+proId int(5) NOT NULL AUTO_INCREMENT,
+proTitle varchar(200) NOT NULL COMMENT '题目描述',
+proKey varchar(50) NOT NULL COMMENT '关键字',
+proType varchar(50) NOT NULL COMMENT '题目类型',
+proPic varchar(200) COMMENT '配图链接',
+PRIMARY KEY (proId),
+FOREIGN KEY(proType) REFERENCES proType(proTypeName)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+insert into problem(proTitle,proKey,proType) values ('什么串行传输类型适合于视频传输？', '局域异步通信', '计算机网络');
+insert into problem(proTitle,proKey,proType) values ('何种介质可用于需要经过大型电机的通信场合？', '传输介质', '计算机网络');
+insert into problem(proTitle,proKey,proType) values ('简述以太网的工作原理，即 CSMA/CD 机制。', '局域网络拓扑 无线网络', '计算机网络');
+insert into problem(proTitle,proKey,proType) values ('请简述中继器、网桥和交换机的作用与区别。', '局域网扩展设备', '计算机网络');
+insert into problem(proTitle,proKey,proType) values ('使用网桥时，两个网段的设备如何分组可以达到好的性能？', '局域网扩展设备', '计算机网络');
+insert into problem(proTitle,proKey,proType,proPic) values ('请说明两台计算机如何使用公用电话交换网传输通信信息。', '远距离通信技术', '计算机网络','C:\Users\dell\Pictures\jw1.jpg');
+insert into problem(proTitle,proKey,proType,proPic) values ('以最少跳数作为最短路径，给出下面图形中所有交换设备的路由表。', '协议分层 广域网', '计算机网络','C:\Users\dell\Pictures\jw2.jpg');
+
+insert into problem(proTitle,proKey,proType) values ('关系R的外码是指?', '关系数据库','数据库');
+insert into problem(proTitle,proKey,proType) values ('关于DBMS的安全机制，请说明。', '数据库安全性', '数据库');
+insert into problem(proTitle,proKey,proType) values ('索引是什么？有什么作用以及优缺点？', '关系查询处理与优化', '数据库');
+insert into problem(proTitle,proKey,proType,proPic) values ('给出该E-R图的关系数据库模式，并指出主键。', '数据库设计 E-R图', '数据库','C:\Users\dell\Pictures\jw3.jpg');
+insert into problem(proTitle,proKey,proType) values ('说一下 ACID 是什么？', '数据库设计 事务', '数据库');
+insert into problem(proTitle,proKey,proType) values ('简介数据库范式。', '数据库设计 范式', '数据库');
+insert into problem(proTitle,proKey,proType,proPic) values ('对于图中运算，结果正确的是？', '关系数据库', '数据库','C:\Users\dell\Pictures\sjk2.jpg,C:\Users\dell\Pictures\sjk1.jpg');
+
+insert into problem(proTitle,proKey,proType) values('为什么要设置总线判优控制？', '系统总线', '计算机组成原理');
+insert into problem(proTitle,proKey,proType) values('简要说明CPU与I/O设备之间传递信息可采用哪几种联络方式，它们分别用于什么场合?', '输入输出系统', '计算机组成原理');
+insert into problem(proTitle,proKey,proType) values('什么是RISC?简述它的主要特点。', '指令系统', '计算机组成原理');
+insert into problem(proTitle,proKey,proType) values('控制单元的功能是什么？其输入受什么控制？', '控制单元的功能', '计算机组成原理');
+insert into problem(proTitle,proKey,proType) values('微指令的地址有哪几种形成方式？', '控制单元的设计', '计算机组成原理');
+insert into problem(proTitle,proKey,proType,proPic) values('结合下图，阐述存储器的层次结构主要体现在什么地方，以及为什么要分这些层次。', '存储器', '计算机组成原理', 'C:\Users\dell\Pictures\jz1.jpg') ;
+insert into problem(proTitle,proKey,proType,proPic) values('结合下图，阐述CPU各个部件的作用。', 'C:\Users\dell\Pictures\jz2.jpg') ;
+
+
+DELIMITER ||
+CREATE TRIGGER trig1
+BEFORE DELETE ON proType
+FOR EACH ROW
+BEGIN
+UPDATE problem
+SET proType='未分类'
+WHERE proType= old.proTypeName ;
+END||
+DELIMITER ;
+
+
+DROP TABLE IF EXISTS interviewer;
+CREATE TABLE interviewer( 
+erId INT(5) NOT NULL AUTO_INCREMENT,
+erName VARCHAR(20) NOT NULL COMMENT '面试官姓名',
+erNo VARCHAR(20) NOT NULL COMMENT '面试官用户名',
+erPwd VARCHAR(40) NOT NULL COMMENT '面试官密码',
+PRIMARY KEY (erId)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+insert into interviewer(erName,erNo,erPwd) values ('TOMY', '1001', '4QrcOUm6Wau+VuBX8g+IPg==');
+
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  testId int(5)  AUTO_INCREMENT,
+  teaId int(5) NOT NULL,
+  testTime datetime(6) DEFAULT NULL,
+  testSum int(5) DEFAULT NULL,
+  eeNo char(18),
+  eeName varchar(20),
+  eeSex varchar(20), 
+  PRIMARY KEY (`testId`),
+  FOREIGN KEY(teaId) REFERENCES interviewer(erId)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `testprorela`;
+CREATE TABLE `testprorela` (
+  tpid int(5) AUTO_INCREMENT,
+  tpTestid int(5) NOT NULL,
+  tpProid int(5) NOT NULL,
+  tpScore int(3),
+   PRIMARY KEY (`tpid`),
+   FOREIGN KEY(tpTestid) REFERENCES test(testId),
+   FOREIGN KEY(tpProid) REFERENCES problem(proId)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+

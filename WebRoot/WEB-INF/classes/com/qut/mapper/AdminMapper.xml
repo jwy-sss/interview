@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.qut.mapper.AdminMapper">
+	
+	<!-- 管理员登录验证 -->
+	<select id="findAdmin" parameterType="com.qut.pojo.Admin"
+						   resultType="com.qut.pojo.Admin">
+		select * from admin 
+		where adminNo=#{adminNo} and adminPwd=#{adminPwd}
+	</select>
+	
+	<select id="findAdminById" parameterType="int"
+						   resultType="com.qut.pojo.Admin">
+		select * from admin where adminId=#{adminId}
+	</select>
+	
+	<select id="selectAdmin" resultType="com.qut.pojo.Admin">
+		select * from admin
+	</select>
+	
+	<!-- 修改管理员No和密码，Id不修改 -->
+	<update id="updAdm" parameterType="com.qut.pojo.Admin">
+		update admin 
+		<set>
+		<if test="adminNo != null">adminNo=#{adminNo},</if>
+		adminPwd=#{adminPwd}
+		</set>
+		where adminId=#{adminId}
+	</update>
+	
+	<delete id="delAdminById" parameterType="int" >
+		delete from admin where adminId=#{adminId};
+	</delete>
+	
+	<insert id="addAdmin" parameterType="com.qut.pojo.Admin">
+		insert into admin values(null,#{adminNo},#{adminPwd})
+	</insert>
+	
+</mapper>

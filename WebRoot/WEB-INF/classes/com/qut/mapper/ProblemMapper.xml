@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.qut.mapper.ProblemMapper">
+
+	<insert id="addPro" parameterType="com.qut.pojo.Problem">
+		insert into problem values(null,#{proTitle},#{proKey},
+		#{proType},#{proPic})
+	</insert>
+	
+	<delete id="delProById" parameterType="int">
+		delete from problem where proId=#{proId};
+	</delete>
+	
+	<!-- 修改某个试题的信息 -->
+	<update id="updPro" parameterType="com.qut.pojo.Problem">
+		update problem 
+		<set>
+		proTitle=#{proTitle},
+		proKey=#{proKey},proType=#{proType},proPic=#{proPic}
+		</set>
+		where proId=#{proId}
+	</update>
+
+	<select id="selectAllPro" resultType="com.qut.pojo.Problem">
+		select * from problem;
+	</select>
+	
+	<select id="findProById" parameterType="int" resultType="com.qut.pojo.Problem">
+		select * from problem where proId=#{proId};
+	</select>
+	
+	
+	<select id="selectPro" parameterType="com.qut.pojo.Problem" 
+							  resultType="com.qut.pojo.Problem">
+		select * from problem 
+		<where>
+			<if test="proKey!=null and proKey!=''">
+			proKey LIKE "%"#{proKey}"%"
+			</if>
+			<if test="proType!=null and proType!=''">
+			and proType LIKE "%"#{proType}"%"  
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectProByNum" parameterType="int" resultType="com.qut.pojo.Problem">
+		select * from problem order by RAND() limit #{Num};
+	</select>
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.qut.mapper.TestMapper">
+
+	<insert id="addTest" parameterType="com.qut.pojo.Test" >
+	<selectKey keyProperty="testId" order="AFTER" resultType="int" >
+		select last_insert_id()
+		</selectKey>
+		insert into test values (null,#{teaId},#{testTime},#{testSum},
+		#{eeNo},#{eeName},#{eeSex})
+	</insert>
+
+	<delete id="delTestById" parameterType="int">
+		delete from test where testId=#{testId}
+	</delete>
+	<select id="selectTestByTeaid" parameterType="int" resultType="com.qut.pojo.Test">
+		select * from test where teaId=#{teaId};
+	</select>
+	<select id="findTestById" parameterType="int" resultType="com.qut.pojo.Test">
+		select * from test where testId=#{testId};
+	</select>
+	<select id="selTestById" parameterType="int" resultType="com.qut.pojo.Test">
+		select * from test where testId=#{testId};
+	</select>
+
+	<update id="updateScoreByTestId" parameterType="int" >
+		update test set testSum=#{arg0} where testId=#{arg1}
+	</update>
+
+    <select id="selectAllTest" parameterType="int" resultType="com.qut.pojo.Test">
+		select * from test;
+	</select>
+	<select id="selectTest"   resultType="com.qut.pojo.Test">
+		select * from test 
+		<where>
+		<if test="testTime!=null and testTime!=''">
+		 testTime LIKE "%"#{testTime}"%"
+		 </if>
+		 <if test="teaId!=null and teaId!=''">
+		 and teaId=#{teaId}
+		 </if>
+		 </where>
+	</select>
+</mapper>
